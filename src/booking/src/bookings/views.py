@@ -30,6 +30,7 @@ class BookingCreateView(APIView):
             )
 
         booking = serializer.save()
+        print(booking.otp)
         return Response(BookingResponseSerializer(booking).data)
 
 

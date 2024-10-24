@@ -6,6 +6,7 @@ services:
       context: ./auth/src
     ports:
       - 8000:8000
+
   train:
     container_name: dj-train
     build:
@@ -19,3 +20,10 @@ services:
       context: ./booking/src
     ports:
       - 8002:8000
+
+  notification:
+    container_name: dj-notification
+    build:
+      context: ./notification/src
+    ports:
+      - 8003:8000

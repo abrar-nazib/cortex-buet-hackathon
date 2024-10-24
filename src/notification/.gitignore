@@ -1,4 +1,5 @@
 venv/
+*.sqlite3venv/
 *.pyc
 *.sqlite3
 *.cpython

@@ -15,7 +15,7 @@ from .models import Train, Route, Schedule, Seat
 class SeatSerializer(serializers.ModelSerializer):
     class Meta:
         model = Seat
-        fields = ["id", "seat_number", "is_booked"]
+        fields = ["id", "seat_number", "is_booked", "coach_number"]
         read_only_fields = ["id"]
 
 

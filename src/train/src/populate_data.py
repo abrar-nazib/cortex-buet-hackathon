@@ -12,13 +12,15 @@ django.setup()
 from trains.models import Train, Route, Schedule, Seat
 
 
-def create_seats(schedule, num_seats):
+def create_seats(schedule, num_seats, seats_per_coach=55):
     """Create seats for a given schedule"""
     seats = []
+
     for seat_number in range(1, num_seats + 1):
         seat = Seat(
             schedule=schedule,
-            seat_number=seat_number,
+            seat_number=seat_number % seats_per_coach or seats_per_coach,
+            coach_number=seat_number // seats_per_coach + 1,
             is_booked=random.choice(
                 [True, False] + [False] * 8
             ),  # 20% chance of being booked
@@ -60,15 +62,15 @@ def populate_data():
         train_name = f"{random.choice(train_types)} {i+1}"
         train = Train.objects.create(
             name=train_name,
-            num_coaches=2,  # Small number for demo purposes
-            num_seat_per_coach=5,  # 5 seats per coach, so 10 total
+            num_coaches=5,
+            num_seat_per_coach=55,
         )
         print(f"\nCreated train: {train.name}")
 
         # Create 2 routes for each train
         for j in range(2):
             # Select random source and destination
-            source, destination = random.sample(cities, 2)
+            source, destination = random.sample(cities[:3], 2)
 
             route = Route.objects.create(
                 train=train,

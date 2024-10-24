@@ -29,4 +29,5 @@ class Seat(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     schedule = models.ForeignKey(Schedule, on_delete=models.CASCADE)
     seat_number = models.IntegerField()
+    coach_number = models.IntegerField()
     is_booked = models.BooleanField(default=False)

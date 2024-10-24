@@ -13,7 +13,7 @@ on:
 jobs:
   test-auth:
     name: Test Auth Service
-    runs-on: ubuntu-latest
+    runs-on: self-hosted
 
     if: github.ref == 'refs/heads/auth' || github.ref == 'refs/pull/auth'
     steps:
@@ -51,7 +51,7 @@ jobs:
 
   test-trains:
     name: Test Trains Service
-    runs-on: ubuntu-latest
+    runs-on: self-hosted
 
     if: github.ref == 'refs/heads/trains' || github.ref == 'refs/pull/trains'
     steps:
@@ -89,7 +89,7 @@ jobs:
 
   test-booking:
     name: Test Booking Service
-    runs-on: ubuntu-latest
+    runs-on: self-hosted
 
     if: github.ref == 'refs/heads/booking' || github.ref == 'refs/pull/booking'
     steps:
@@ -127,7 +127,7 @@ jobs:
 
   test-notifications:
     name: Test Notifications Service
-    runs-on: ubuntu-latest
+    runs-on: self-hosted
 
     if: github.ref == 'refs/heads/notifications' || github.ref == 'refs/pull/notifications'
     steps:

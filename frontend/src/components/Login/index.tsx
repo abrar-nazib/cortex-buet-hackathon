@@ -29,7 +29,10 @@ export const LoginSchema = z.object({
 
 export default function LoginPage() {
   const router = useRouter(); // Initialize useRouter
-  const { setSession } = useAppContext();
+  const { session,setSession } = useAppContext();
+  if(session?.token){
+    router.push("/search");
+  }
   const form = useForm({
     resolver: zodResolver(LoginSchema),
     defaultValues: {

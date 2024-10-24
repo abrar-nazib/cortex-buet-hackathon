@@ -6,9 +6,34 @@ body {
   font-family: Arial, Helvetica, sans-serif;
 }
 
+
 @layer utilities {
   .text-balance {
     text-wrap: balance;
+  }
+  .shadow-custom-light {
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+  }
+
+  .shadow-custom-dark {
+    box-shadow: 0 4px 6px -1px rgba(255, 255, 255, 0.1), 0 2px 4px -1px rgba(255, 255, 255, 0.06);
+  }
+  .translate-y-0 {
+    transform: translateY(0);
+  }
+
+  .-translate-y-full {
+    transform: translateY(-100%);
+  }
+
+  .transition-transform {
+    transition: transform 0.3s ease-in-out;
+  }
+  .sidebar-link{
+    @apply text-primary font-semibold border-2 border-primary text-xl  rounded-sm px-6 py-4 hover:text-gray-50 hover:bg-primary transition-all duration-300;
+  }
+  .active{
+    @apply bg-primary text-gray-50 hover:bg-gray-50 hover:text-primary; 
   }
 }
 

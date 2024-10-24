@@ -89,7 +89,7 @@ jobs:
 
   test-booking:
     name: Test Booking Service
-    runs-on: ubuntu-latest
+    runs-on: self-hosted
 
     if: github.ref == 'refs/heads/booking' || github.ref == 'refs/pull/booking'
     steps:

@@ -5,10 +5,14 @@ on:
     branches:
       - auth
       - trains
+      - booking
+      - notifications
   pull_request:
     branches:
       - auth
       - trains
+      - booking
+      - notifications
 
 jobs:
   test-auth:
@@ -19,10 +23,10 @@ jobs:
     steps:
       - uses: actions/checkout@v3
 
-      - name: Set up Python 3.11
+      - name: Set up Python 3.10
         uses: actions/setup-python@v4
         with:
-          python-version: "3.11"
+          python-version: "3.10"
 
       - name: Install Dependencies
         run: |
@@ -57,10 +61,10 @@ jobs:
     steps:
       - uses: actions/checkout@v3
 
-      - name: Set up Python 3.11
+      - name: Set up Python 3.10
         uses: actions/setup-python@v4
         with:
-          python-version: "3.11"
+          python-version: "3.10"
 
       - name: Install Dependencies
         run: |
@@ -95,10 +99,10 @@ jobs:
     steps:
       - uses: actions/checkout@v3
 
-      - name: Set up Python 3.11
+      - name: Set up Python 3.10
         uses: actions/setup-python@v4
         with:
-          python-version: "3.11"
+          python-version: "3.10"
 
       - name: Install Dependencies
         run: |
@@ -136,6 +140,3 @@ jobs:
       - name: Mock Notification Service
         run: |
           echo "Mocking Notification Service"
-        env:
-          DJANGO_SETTINGS_MODULE: src.notifications.src.core.settings
-          PYTHONPATH: ${{ env.PYTHONPATH }}

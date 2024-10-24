@@ -31,6 +31,8 @@ INSTALLED_APPS = [
     "dj_rest_auth.registration",
     "drf_spectacular",
     "corsheaders",
+    # Local
+    "notifications.apps.NotificationsConfig",
 ]
 
 
@@ -78,6 +80,15 @@ DATABASES = {
     }
 }
 
+# Config for allauth
+SITE_ID = 1
+EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"  # Production Email.
+EMAIL_HOST = "smtp.gmail.com"
+EMAIL_PORT = 587
+EMAIL_USE_TLS = True  # Transport Layer Security for google
+EMAIL_HOST_USER = "abrarnazib@gmail.com"
+EMAIL_HOST_PASSWORD = "upcn xfrv kjnr fawi"
+DEFAULT_FROM_EMAIL = "abrarnazib@gmail.com"
 
 # Password validation
 # https://docs.djangoproject.com/en/5.0/ref/settings/#auth-password-validators

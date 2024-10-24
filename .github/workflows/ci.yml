@@ -59,6 +59,7 @@ jobs:
         run: |
           python src/auth/src/manage.py makemigrations
           python src/auth/src/manage.py migrate
+          pwd
         env:
           DJANGO_SETTINGS_MODULE: src.auth.src.core.settings
           PYTHONPATH: ${{ env.PYTHONPATH }}
@@ -66,7 +67,7 @@ jobs:
       - name: Run Tests
         run: |
           pwd
-          print("wefghjiwefjhifk")
+          
         env:
           DJANGO_SETTINGS_MODULE: src.auth.src.core.settings
           PYTHONPATH: ${{ env.PYTHONPATH }}

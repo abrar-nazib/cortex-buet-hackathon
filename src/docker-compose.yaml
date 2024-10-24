@@ -21,8 +21,8 @@ services:
       - 8002:8000
 
   notification:
-    container_name: dj-booking
+    container_name: dj-notification
     build:
-      context: ./booking/src
+      context: ./notification/src
     ports:
       - 8003:8000

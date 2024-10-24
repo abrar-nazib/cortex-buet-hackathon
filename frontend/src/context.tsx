@@ -11,6 +11,7 @@ import {
   PaymentTransaction,
   TrainResult,
   TrainSeatFare,
+  ConfirmedSeat
 } from "@/utils/types";
 
 // Define the context types
@@ -22,10 +23,11 @@ type AppState = {
   routes: Route[];
   schedules: Schedule[];
   seats: Seat[];
-  bookings: Booking[];
+  bookings: Booking| null;
   passengers: Passenger[];
   payments: Payment[];
   transactions: PaymentTransaction[];
+  confirmSeat: ConfirmedSeat | null;
   setUser: (user: User | null) => void;
   setSession: (session: Session | null) => void;
   setTrainResults: (results: TrainResult[]) => void;
@@ -33,10 +35,11 @@ type AppState = {
   setRoutes: (routes: Route[]) => void;
   setSchedules: (schedules: Schedule[]) => void;
   setSeats: (seats: Seat[]) => void;
-  setBookings: (bookings: Booking[]) => void;
+  setBookings: (bookings: Booking) => void;
   setPassengers: (passengers: Passenger[]) => void;
   setPayments: (payments: Payment[]) => void;
   setTransactions: (transactions: PaymentTransaction[]) => void;
+  setConfirmSeat: (confirmSeat: ConfirmedSeat) => void;
 };
 
 // Initial state
@@ -48,10 +51,11 @@ const initialState: AppState = {
   routes: [],
   schedules: [],
   seats: [],
-  bookings: [],
+  bookings:null,
   passengers: [],
   payments: [],
   transactions: [],
+  confirmSeat: null,
   setUser: () => {},
   setSession: () => {},
   setTrainResults: () => {},
@@ -63,6 +67,7 @@ const initialState: AppState = {
   setPassengers: () => {},
   setPayments: () => {},
   setTransactions: () => {},
+  setConfirmSeat: () => {},
 };
 
 // Create the context
@@ -76,11 +81,12 @@ export const AppProvider = ({ children }: { children: ReactNode }) => {
   const [trainResult, setTrainResults] = useState<TrainResult[]>([]);
   const [schedules, setSchedules] = useState<Schedule[]>([]);
   const [seats, setSeats] = useState<Seat[]>([]);
-  const [bookings, setBookings] = useState<Booking[]>([]);
+  const [bookings, setBookings] = useState<Booking|null>(null);
   const [passengers, setPassengers] = useState<Passenger[]>([]);
   const [payments, setPayments] = useState<Payment[]>([]);
   const [trainSeatFare, setTrainSeatFare] = useState<TrainSeatFare | null>(null);
   const [transactions, setTransactions] = useState<PaymentTransaction[]>([]);
+  const [confirmSeat, setConfirmSeat] = useState<ConfirmedSeat | null>(null);
 
   return (
     <AppContext.Provider
@@ -96,6 +102,7 @@ export const AppProvider = ({ children }: { children: ReactNode }) => {
         payments,
         transactions,
         trainSeatFare,
+        confirmSeat,
         setUser,
         setSession,
         setTrainResults,
@@ -107,6 +114,7 @@ export const AppProvider = ({ children }: { children: ReactNode }) => {
         setPayments,
         setTransactions,
         setTrainSeatFare,
+        setConfirmSeat,
       }}
     >
       {children}

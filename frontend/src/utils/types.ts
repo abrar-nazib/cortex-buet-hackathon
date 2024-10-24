@@ -58,16 +58,19 @@ export type Seat = {
 
 // Booking Service
 
+// "id": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
+//   "seat_id": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
+//   "amount_payable": 0,
+//   "payment_done": true,
+//   "booking_confirmed": true,
+//   "expires_at": "2024-10-24T17:33:09.647Z"
 export type Booking = {
-  id: number;
-  userId: number;
-  scheduleId: number;
-  seatId: number;
-  bookingReference: string;
-  status: string;
-  createdAt: Date;
-  expiresAt: Date | null;
-  totalAmount: number;
+  id: string;
+  seatId: string;
+  amountPayable: number;
+  paymentDone: boolean;
+  bookingConfirmed: boolean;
+  expiresAt: Date;
 };
 
 export type Passenger = {
@@ -81,15 +84,21 @@ export type Passenger = {
 };
 
 // Payment Service
+// {
+//   "id": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
+//   "seat_id": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
+//   "amount_payable": 0,
+//   "payment_done": true,
+//   "booking_confirmed": true,
+//   "expires_at": "2024-10-24T17:47:45.079Z"
+// }
 export type Payment = {
-  id: number;
-  bookingId: number;
-  amount: number;
-  paymentReference: string;
-  paymentMethod: string;
-  status: string;
-  createdAt: Date;
-  updatedAt: Date | null;
+  id: string;
+  seat_id: string;
+  amount_payable: number;
+  payment_done: boolean;
+  booking_confirmed: boolean;
+  expires_at: Date;
 };
 
 export type PaymentTransaction = {
@@ -100,4 +109,14 @@ export type PaymentTransaction = {
   responseCode: string | null;
   responseMessage: string | null;
   createdAt: Date;
+};
+
+export type ConfirmedSeat = {
+  seat_number: number;
+  coach_number: number;
+  train_fare: number;
+  train_name: string;
+  source: string;
+  destination: string;
+  date: string;
 };

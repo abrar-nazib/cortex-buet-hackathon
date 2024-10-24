@@ -49,6 +49,9 @@ export type Schedule = {
   status: string;
 };
 
+export type SelectedSeat={
+  id:string;
+}
 export type Seat = {
   id: string;
   seat_number: number;
@@ -66,7 +69,7 @@ export type Seat = {
 //   "expires_at": "2024-10-24T17:33:09.647Z"
 export type Booking = {
   id: string;
-  seatId: string;
+  seat_Id: string;
   amountPayable: number;
   paymentDone: boolean;
   bookingConfirmed: boolean;

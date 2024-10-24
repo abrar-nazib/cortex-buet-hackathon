@@ -11,7 +11,8 @@ import {
   PaymentTransaction,
   TrainResult,
   TrainSeatFare,
-  ConfirmedSeat
+  ConfirmedSeat,
+  SelectedSeat,
 } from "@/utils/types";
 
 // Define the context types
@@ -19,15 +20,16 @@ type AppState = {
   user: User | null;
   session: Session | null;
   trainResult: TrainResult[];
-  trainSeatFare: TrainSeatFare| null;
+  trainSeatFare: TrainSeatFare | null;
   routes: Route[];
   schedules: Schedule[];
   seats: Seat[];
-  bookings: Booking| null;
+  bookings: Booking | null;
   passengers: Passenger[];
   payments: Payment[];
   transactions: PaymentTransaction[];
   confirmSeat: ConfirmedSeat | null;
+  selectedSeat: SelectedSeat | null;
   setUser: (user: User | null) => void;
   setSession: (session: Session | null) => void;
   setTrainResults: (results: TrainResult[]) => void;
@@ -40,6 +42,7 @@ type AppState = {
   setPayments: (payments: Payment[]) => void;
   setTransactions: (transactions: PaymentTransaction[]) => void;
   setConfirmSeat: (confirmSeat: ConfirmedSeat) => void;
+  setSelectedSeat: (selectedSeat: SelectedSeat) => void;
 };
 
 // Initial state
@@ -47,15 +50,16 @@ const initialState: AppState = {
   user: null,
   session: null,
   trainResult: [],
-  trainSeatFare:null,
+  trainSeatFare: null,
   routes: [],
   schedules: [],
   seats: [],
-  bookings:null,
+  bookings: null,
   passengers: [],
   payments: [],
   transactions: [],
   confirmSeat: null,
+  selectedSeat: null,
   setUser: () => {},
   setSession: () => {},
   setTrainResults: () => {},
@@ -68,6 +72,7 @@ const initialState: AppState = {
   setPayments: () => {},
   setTransactions: () => {},
   setConfirmSeat: () => {},
+  setSelectedSeat: () => {},
 };
 
 // Create the context
@@ -81,12 +86,17 @@ export const AppProvider = ({ children }: { children: ReactNode }) => {
   const [trainResult, setTrainResults] = useState<TrainResult[]>([]);
   const [schedules, setSchedules] = useState<Schedule[]>([]);
   const [seats, setSeats] = useState<Seat[]>([]);
-  const [bookings, setBookings] = useState<Booking|null>(null);
+  const [bookings, setBookings] = useState<Booking | null>(null);
   const [passengers, setPassengers] = useState<Passenger[]>([]);
   const [payments, setPayments] = useState<Payment[]>([]);
-  const [trainSeatFare, setTrainSeatFare] = useState<TrainSeatFare | null>(null);
+  const [trainSeatFare, setTrainSeatFare] = useState<TrainSeatFare | null>(
+    null
+  );
   const [transactions, setTransactions] = useState<PaymentTransaction[]>([]);
   const [confirmSeat, setConfirmSeat] = useState<ConfirmedSeat | null>(null);
+ 
+const [selectedSeat, setSelectedSeat] = useState<SelectedSeat | null>(null);
+
 
   return (
     <AppContext.Provider
@@ -103,6 +113,7 @@ export const AppProvider = ({ children }: { children: ReactNode }) => {
         transactions,
         trainSeatFare,
         confirmSeat,
+        selectedSeat,
         setUser,
         setSession,
         setTrainResults,
@@ -115,6 +126,7 @@ export const AppProvider = ({ children }: { children: ReactNode }) => {
         setTransactions,
         setTrainSeatFare,
         setConfirmSeat,
+        setSelectedSeat,
       }}
     >
       {children}

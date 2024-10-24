@@ -5,20 +5,19 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { toast } from "@/hooks/use-toast";
-import { useAppContext } from '@/context';
-import { useRouter } from 'next/navigation';
-import React from 'react'
+import { useAppContext } from "@/context";
+import { useRouter } from "next/navigation";
+import React from "react";
+import { API_BOOKING } from "@/constants";
 
-export default function Payment ()  {
-  
+export default function Payment() {
   const router = useRouter(); // Initialize useRouter
-  const { session,bookings } = useAppContext();
-  if(!session?.token){
+  const { session, bookings } = useAppContext();
+  if (!session?.token) {
     router.push("/login");
   }
- // PaymentPage.tsx
-const bookingId=bookings?.id;
-
+  // PaymentPage.tsx
+  const bookingId = bookings?.id;
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -27,7 +26,7 @@ const bookingId=bookings?.id;
   const handlePayment = async () => {
     setLoading(true);
     try {
-      const response = await fetch(`/api/booking/${bookingId}/payment/`, {
+      const response = await fetch(`${API_BOOKING}/booking/${bookingId}/payment/`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -44,6 +43,7 @@ const bookingId=bookings?.id;
           description: "Your payment was processed successfully.",
           variant: "success",
         });
+        router.push("/summary")
       } else {
         toast({
           title: "Payment Failed",
@@ -92,6 +92,4 @@ const bookingId=bookings?.id;
       </Button>
     </div>
   );
-
-
 }

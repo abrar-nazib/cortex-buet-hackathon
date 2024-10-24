@@ -9,7 +9,13 @@ import {
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Label } from "@/components/ui/label";
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from "@/components/ui/dialog";
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogFooter,
+} from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import { toast } from "@/hooks/use-toast";
 import { useAppContext } from "@/context";
@@ -20,12 +26,19 @@ import { set } from "date-fns";
 
 // TrainItem component
 export default function TrainItem({ train }: { train: TrainResult }) {
-
   const router = useRouter();
-  const { seats, setSeats, setTrainSeatFare, user,bookings,setBookings } = useAppContext();
+  const {
+    seats,
+    setSeats,
+    setTrainSeatFare,
+    user,
+    bookings,
+    setBookings,
+    setSelectedSeat,
+  } = useAppContext();
   const [loading, setLoading] = useState(false);
   const [coachFilter, setCoachFilter] = useState("1");
-  const [selectedSeat, setSelectedSeat] = useState<string | null>(null);
+  const [selectedSeatID, setSelectedSeatID] = useState<string | null>(null);
   const [otp, setOtp] = useState<string>(""); // For OTP input
   const [dialogOpen, setDialogOpen] = useState(false); // For Dialog open/close
   const [countdown, setCountdown] = useState(60); // 1-minute countdown for OTP
@@ -78,7 +91,7 @@ export default function TrainItem({ train }: { train: TrainResult }) {
           description: "This seat has been booked. Please choose another.",
           variant: "destructive",
         });
-        setSelectedSeat(null);
+        setSelectedSeatID(null);
         setSeats(
           seats.map((seat) =>
             seat.id === seatId ? { ...seat, is_booked: true } : seat
@@ -92,7 +105,7 @@ export default function TrainItem({ train }: { train: TrainResult }) {
         });
         const responseData = await response.json();
         setBookings(responseData);
-        setSelectedSeat(seatId);
+        setSelectedSeatID(seatId);
         setDialogOpen(true); // Open OTP dialog after seat selection
         startCountdown(); // Start OTP countdown
       }
@@ -124,23 +137,28 @@ export default function TrainItem({ train }: { train: TrainResult }) {
   const submitOtp = async () => {
     setIsSubmitting(true);
     try {
-      const bookinID=bookings?.id;
-      const response = await fetch(`${API_BOOKING}/booking/${bookinID}/confirm/`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ otp: Number(otp) }),
-      });
+      const bookinID = bookings?.id;
+      const response = await fetch(
+        `${API_BOOKING}/booking/${bookinID}/confirm/`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ otp: Number(otp) }),
+        }
+      );
 
       if (response.ok) {
         toast({
           title: "Booking Confirmed",
-          description: "Your seat has been successfully booked. Proceeding to Payment.",
+          description:
+            "Your seat has been successfully booked. Proceeding to Payment.",
           variant: "success",
         });
+
         setDialogOpen(false); // Close dialog on successful booking
-   
+
         router.push("/payment"); // Redirect to payment page
       } else {
         toast({
@@ -166,7 +184,10 @@ export default function TrainItem({ train }: { train: TrainResult }) {
     : seats;
 
   return (
-    <AccordionItem value={train.id} className="bg-primary/5 rounded-lg px-8 hover:bg-primary/15">
+    <AccordionItem
+      value={train.id}
+      className="bg-primary/5 rounded-lg px-8 hover:bg-primary/15"
+    >
       <AccordionTrigger onClick={fetchSeats}>
         <p>{train.train}</p>
         <p>{train.source}</p>
@@ -199,20 +220,28 @@ export default function TrainItem({ train }: { train: TrainResult }) {
                 <div key={seat.id} className="flex items-center space-x-2">
                   <Checkbox
                     id={seat.id}
-                    checked={selectedSeat === seat.id}
+                    checked={selectedSeatID === seat.id}
                     onCheckedChange={() => {
-                      if (selectedSeat === seat.id) {
-                        setSelectedSeat(null); // Unselect the seat
+                      if (selectedSeatID === seat.id) {
+                        setSelectedSeatID(null); // Unselect the seat
                       } else if (!seat.is_booked) {
                         verifySeat(seat.id); // Select the seat and open OTP dialog
+                        setSelectedSeat({ id: seat.id });
                       }
                     }}
                     disabled={
                       seat.is_booked ||
-                      (selectedSeat !== null && selectedSeat !== seat.id)
+                      (selectedSeatID !== null && selectedSeatID !== seat.id)
                     }
                   />
-                  <Label htmlFor={seat.id} className={`${seat.is_booked ? "text-gray-400" : ""} ${selectedSeat === seat.id ? "text-green-600 font-bold" : ""}`}>
+                  <Label
+                    htmlFor={seat.id}
+                    className={`${seat.is_booked ? "text-gray-400" : ""} ${
+                      selectedSeatID === seat.id
+                        ? "text-green-600 font-bold"
+                        : ""
+                    }`}
+                  >
                     Seat {seat.seat_number} (Coach {seat.coach_number})
                   </Label>
                 </div>
@@ -226,7 +255,9 @@ export default function TrainItem({ train }: { train: TrainResult }) {
                   <DialogTitle>Enter OTP</DialogTitle>
                 </DialogHeader>
                 <div className="py-4">
-                  <Label htmlFor="otp">Enter the 9-digit OTP sent to your phone:</Label>
+                  <Label htmlFor="otp">
+                    Enter the 9-digit OTP sent to your phone:
+                  </Label>
                   <Input
                     id="otp"
                     value={otp}
@@ -234,10 +265,15 @@ export default function TrainItem({ train }: { train: TrainResult }) {
                     placeholder="Enter OTP sent to your email"
                     className="mt-2"
                   />
-                  <p className="text-gray-500 mt-2">Time remaining: {countdown}s</p>
+                  <p className="text-gray-500 mt-2">
+                    Time remaining: {countdown}s
+                  </p>
                 </div>
                 <DialogFooter>
-                  <Button onClick={submitOtp} disabled={isSubmitting || otp.length !== 9}>
+                  <Button
+                    onClick={submitOtp}
+                    disabled={isSubmitting || otp.length == 0}
+                  >
                     {isSubmitting ? "Submitting..." : "Submit OTP"}
                   </Button>
                 </DialogFooter>

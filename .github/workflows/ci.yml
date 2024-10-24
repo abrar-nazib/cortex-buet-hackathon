@@ -65,24 +65,24 @@ jobs:
       - name: Install Dependencies
         run: |
           python -m pip install --upgrade pip
-          pip install -r src/trains/src/requirements.txt
+          pip install -r src/train/src/requirements.txt
 
       - name: Set PYTHONPATH
         run: |
-          echo "PYTHONPATH=$PYTHONPATH:/src/trains/src/" >> $GITHUB_ENV
+          echo "PYTHONPATH=$PYTHONPATH:/src/train/src/" >> $GITHUB_ENV
 
       - name: Run Migrations
         run: |
-          python src/trains/src/manage.py makemigrations
-          python src/trains/src/manage.py migrate
+          python src/train/src/manage.py makemigrations
+          python src/train/src/manage.py migrate
         env:
-          DJANGO_SETTINGS_MODULE: src.trains.src.core.settings
+          DJANGO_SETTINGS_MODULE: src.train.src.core.settings
           PYTHONPATH: ${{ env.PYTHONPATH }}
 
       - name: Run Tests
         run: |
-          python src/trains/src/manage.py test trains -v 2
+          python src/train/src/manage.py test trains -v 2
 
         env:
-          DJANGO_SETTINGS_MODULE: src.trains.src.core.settings
+          DJANGO_SETTINGS_MODULE: src.train.src.core.settings
           PYTHONPATH: ${{ env.PYTHONPATH }}

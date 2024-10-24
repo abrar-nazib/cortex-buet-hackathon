@@ -1,0 +1,8 @@
+version: "3.8"
+services:
+  auth:
+    container_name: dj-auth
+    build:
+      context: ./auth/src
+    ports:
+      - 8000:8000

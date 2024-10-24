@@ -86,3 +86,56 @@ jobs:
         env:
           DJANGO_SETTINGS_MODULE: src.train.src.core.settings
           PYTHONPATH: ${{ env.PYTHONPATH }}
+
+  test-booking:
+    name: Test Booking Service
+    runs-on: ubuntu-latest
+
+    if: github.ref == 'refs/heads/booking' || github.ref == 'refs/pull/booking'
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Set up Python 3.11
+        uses: actions/setup-python@v4
+        with:
+          python-version: "3.11"
+
+      - name: Install Dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r src/bookings/src/requirements.txt
+
+      - name: Set PYTHONPATH
+        run: |
+          echo "PYTHONPATH=$PYTHONPATH:/src/bookings/src/" >> $GITHUB_ENV
+
+      - name: Run Migrations
+        run: |
+          python src/bookings/src/manage.py makemigrations
+          python src/bookings/src/manage.py migrate
+        env:
+          DJANGO_SETTINGS_MODULE: src.bookings.src.core.settings
+          PYTHONPATH: ${{ env.PYTHONPATH }}
+
+      - name: Run Tests
+        run: |
+          python src/bookings/src/manage.py test bookings -v 2
+
+        env:
+          DJANGO_SETTINGS_MODULE: src.bookings.src.core.settings
+          PYTHONPATH: ${{ env.PYTHONPATH }}
+
+  test-notifications:
+    name: Test Notifications Service
+    runs-on: ubuntu-latest
+
+    if: github.ref == 'refs/heads/notifications' || github.ref == 'refs/pull/notifications'
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Mock Notification Service
+        run: |
+          echo "Mocking Notification Service"
+        env:
+          DJANGO_SETTINGS_MODULE: src.notifications.src.core.settings
+          PYTHONPATH: ${{ env.PYTHONPATH }}

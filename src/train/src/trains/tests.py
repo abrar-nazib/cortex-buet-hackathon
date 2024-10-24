@@ -77,4 +77,3 @@ class TrainSearchTests(APITestCase):
         self.assertEqual(response.data["seats"][0]["seat_number"], 1)
         self.assertFalse(response.data["seats"][0]["is_booked"])
         self.assertEqual(response.data["seats"][0]["coach_number"], 1)
-

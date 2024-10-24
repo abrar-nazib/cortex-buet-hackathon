@@ -5,4 +5,4 @@ import uuid
 
 class CustomUser(AbstractUser):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
-    profession = models.CharField(max_length=100, blank=True)
+    phone = models.CharField(max_length=20, blank=True)

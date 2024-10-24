@@ -124,7 +124,7 @@ REST_FRAMEWORK = {
     ],
     "DEFAULT_AUTHENTICATION_CLASSES": [  # For setting authentication mechanism
         "rest_framework.authentication.TokenAuthentication",  #
-        "rest_framework.authentication.SessionAuthentication",  # Sessions needed for powering browsable API
+        # "rest_framework.authentication.SessionAuthentication",  # Sessions needed for powering browsable API
         # "rest_framework_simplejwt.authentication.JWTAuthentication", # JWT Authentication
     ],
     "DEFAULT_SCHEMA_CLASS": "drf_spectacular.openapi.AutoSchema",

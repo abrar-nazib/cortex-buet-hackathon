@@ -48,12 +48,9 @@ INSTALLED_APPS = [
     "drf_spectacular",
     "corsheaders",
     # Local
-    "accounts.apps.AccountsConfig",
+    "trains.apps.TrainsConfig",
 ]
 
-
-# Add the auth_user_model setting to the settings.py file in the core project.
-AUTH_USER_MODEL = "accounts.CustomUser"
 
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
@@ -139,8 +136,8 @@ ACCOUNT_SESSION_REMEMBER = True
 
 # Schema for API documentation
 SPECTACULAR_SETTINGS = {
-    "TITLE": "Course Tracker API",
-    "DESCRIPTION": "API for tracking courses and lessons",
+    "TITLE": "CORTEX API",
+    "DESCRIPTION": "CORTEX API",
     "VERSION": "1.0.0",
 }
 

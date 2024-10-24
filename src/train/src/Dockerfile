@@ -12,13 +12,12 @@ COPY ./requirements.txt /usr/src/app/requirements.txt
 
 RUN pip install -r /usr/src/app/requirements.txt
 
+
 COPY . /usr/src/app/
 
 RUN python /usr/src/app/manage.py migrate
 
-# Decide whether to run populate_data.py based on your needs
-# If you need to populate data during the build, uncomment the next line
-# RUN python /usr/src/app/populate_data.py
+RUN python /usr/src/app/populate_data.py
 
 # Run the application on port 8000 , 0.0.0.0
 CMD ["python", "manage.py", "runserver", "0.0.0.0:8000"]

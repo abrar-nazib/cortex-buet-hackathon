@@ -12,3 +12,10 @@ services:
       context: ./train/src
     ports:
       - 8001:8000
+
+  booking:
+    container_name: dj-booking
+    build:
+      context: ./booking/src
+    ports:
+      - 8001:8000

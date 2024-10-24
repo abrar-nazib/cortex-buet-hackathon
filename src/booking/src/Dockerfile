@@ -17,8 +17,6 @@ COPY . /usr/src/app/
 
 RUN python /usr/src/app/manage.py migrate
 
-RUN python /usr/src/app/populate_data.py
-
 # Run the application on port 8000 , 0.0.0.0
 CMD ["python", "manage.py", "runserver", "0.0.0.0:8000"]
 

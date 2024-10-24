@@ -14,6 +14,10 @@ from drf_spectacular.utils import extend_schema
 
 
 class BookingCreateView(APIView):
+
+    def mark_seat_as_booked(self, seat_id):
+        print(f"Seat {seat_id} is marked as booked.")
+
     @extend_schema(request=BookingCreateSerializer, responses=BookingResponseSerializer)
     def post(self, request):
         serializer = BookingCreateSerializer(data=request.data)
@@ -31,6 +35,9 @@ class BookingCreateView(APIView):
 
         booking = serializer.save()
         print(booking.otp)
+        # Mark the seat as booked: This is a dummy function
+        self.mark_seat_as_booked(booking.seat_id)
+
         return Response(BookingResponseSerializer(booking).data)
 
 

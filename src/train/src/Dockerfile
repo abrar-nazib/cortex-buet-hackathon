@@ -16,12 +16,9 @@ RUN pip install -r /usr/src/app/requirements.txt
 COPY . /usr/src/app/
 
 RUN python /usr/src/app/manage.py migrate
-<<<<<<< HEAD
-=======
 
 RUN python /usr/src/app/populate_data.py
 
->>>>>>> 45dafb892f89e5095973a63c9868f3884eb94300
 # Run the application on port 8000 , 0.0.0.0
 CMD ["python", "manage.py", "runserver", "0.0.0.0:8000"]
 

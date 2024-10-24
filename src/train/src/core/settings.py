@@ -48,13 +48,9 @@ INSTALLED_APPS = [
     "drf_spectacular",
     "corsheaders",
     # Local
-    "accounts.apps.AccountsConfig",
-      'corsheaders',
+    "trains.apps.TrainsConfig",
 ]
 
-
-# Add the auth_user_model setting to the settings.py file in the core project.
-AUTH_USER_MODEL = "accounts.CustomUser"
 
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
@@ -66,11 +62,7 @@ MIDDLEWARE = [
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
     # Third party middleware
     "allauth.account.middleware.AccountMiddleware",
-<<<<<<< HEAD
-    'corsheaders.middleware.CorsMiddleware',
-=======
     "corsheaders.middleware.CorsMiddleware",
->>>>>>> 45dafb892f89e5095973a63c9868f3884eb94300
 ]
 
 ROOT_URLCONF = "core.urls"
@@ -144,8 +136,8 @@ ACCOUNT_SESSION_REMEMBER = True
 
 # Schema for API documentation
 SPECTACULAR_SETTINGS = {
-    "TITLE": "Course Tracker API",
-    "DESCRIPTION": "API for tracking courses and lessons",
+    "TITLE": "CORTEX API",
+    "DESCRIPTION": "CORTEX API",
     "VERSION": "1.0.0",
 }
 

@@ -1,5 +1,5 @@
 "use client";
-
+import { useEffect } from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import * as z from "zod";
@@ -29,8 +29,8 @@ export const LoginSchema = z.object({
 
 export default function LoginPage() {
   const router = useRouter(); // Initialize useRouter
-  const { session,setSession } = useAppContext();
-  if(session?.token){
+  const { session, setSession, setUser} = useAppContext();
+  if (session?.token) {
     router.push("/search");
   }
   const form = useForm({
@@ -62,14 +62,23 @@ export default function LoginPage() {
       alert("Login failed");
     }
     const responseData = await response.json();
-    console.log(responseData);
     setSession({ token: responseData.key });
+
+    const userREsponse = await fetch(`${API_URL}/auth/user/`, {
+      headers: {
+        Authorization: `Token ${responseData?.key}`,
+      },
+    });
+    const userResponseData = await userREsponse.json();
+    setUser(userResponseData);
+
     router.push("/search");
   };
 
+
   return (
     <Form {...form}>
-            <form
+      <form
         className="space-y-6 bg-white border-2 border-primary px-12 py-16 rounded-lg shadow-lg text-md dark:text-gray-200 dark:bg-primary/15 dark:border-primary bg-opacity-50"
         onSubmit={form.handleSubmit(async (data, event) => {
           event?.preventDefault(); // Prevent default form submission
@@ -80,7 +89,6 @@ export default function LoginPage() {
           }
         })}
       >
-
         <FormField
           control={form.control}
           name="username"

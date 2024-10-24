@@ -15,10 +15,24 @@ import {
   FormControl,
   FormMessage,
 } from "@/components/ui/form";
-import { Popover, PopoverTrigger, PopoverContent } from "@/components/ui/popover";
-import { Command, CommandInput, CommandList, CommandGroup, CommandItem, CommandEmpty } from "@/components/ui/command";
+import {
+  Popover,
+  PopoverTrigger,
+  PopoverContent,
+} from "@/components/ui/popover";
+import {
+  Command,
+  CommandInput,
+  CommandList,
+  CommandGroup,
+  CommandItem,
+  CommandEmpty,
+} from "@/components/ui/command";
 import { useState } from "react";
 import { cn } from "@/lib/utils";
+import { useAppContext } from "@/context";
+import { API_TRAIN } from "@/constants";
+import { useRouter } from "next/navigation";
 
 const stations = [
   "Dhaka",
@@ -44,6 +58,8 @@ const FormSchema = z.object({
 type FormData = z.infer<typeof FormSchema>;
 
 export default function SearchTrain() {
+  const { setTrainResults } = useAppContext();
+  const router = useRouter();
   const form = useForm<FormData>({
     resolver: zodResolver(FormSchema),
     defaultValues: {
@@ -56,25 +72,40 @@ export default function SearchTrain() {
   const [selectedFrom, setSelectedFrom] = useState<string | null>(null);
   const [selectedTo, setSelectedTo] = useState<string | null>(null);
 
-  const availableStationsForFrom = stations.filter(station => station !== selectedTo);
-  const availableStationsForTo = stations.filter(station => station !== selectedFrom);
+  const availableStationsForFrom = stations.filter(
+    (station) => station !== selectedTo
+  );
+  const availableStationsForTo = stations.filter(
+    (station) => station !== selectedFrom
+  );
 
-  const onSubmit = (data: FormData) => {
-    console.log("Form submitted", data);
-    // Handle form submission
+  const onSubmit = async (data: FormData) => {
+    const formattedDate = format(data.date, "yyyy-MM-dd");
+    const response = await fetch(
+      `${API_TRAIN}/trains/search/?date=${formattedDate}&destination=${data.to}&source=${data.from}`
+    );
+    // http://localhost:8001/trains/search/?date=2024-10-25&destination=Chittagong&source=Khulna'
+
+    const responseData = await response.json();
+    setTrainResults(responseData);
+    router.push("/search/results");
+
+    // Handle API call with formatted payload
   };
 
   return (
     <Form {...form}>
-      <form onSubmit={form.handleSubmit(onSubmit)} className="w-full flex-grow space-y-6 bg-white border-2 border-primary/15 px-12 py-8 rounded-lg dark:bg-primary/15 dark:border-primary bg-opacity-50 shadow-lg text-md dark:text-gray-200 dark:shadow-custom-dark">
+      <form
+        onSubmit={form.handleSubmit(onSubmit)}
+        className="w-full flex-grow space-y-6 bg-white border-2 border-primary/15 px-12 py-8 rounded-lg dark:bg-primary/15 dark:border-primary bg-opacity-50 shadow-lg text-md dark:text-gray-200 dark:shadow-custom-dark"
+      >
         {/* From Station Combobox */}
         <FormField
           control={form.control}
           name="from"
-          
           render={({ field }) => (
-            <FormItem >
-              <FormLabel className=" mr-6">From Station: </FormLabel>
+            <FormItem>
+              <FormLabel className="mr-6">From Station: </FormLabel>
               <Popover>
                 <PopoverTrigger asChild>
                   <FormControl>
@@ -97,7 +128,7 @@ export default function SearchTrain() {
                     <CommandList>
                       <CommandEmpty>No station found.</CommandEmpty>
                       <CommandGroup>
-                        {availableStationsForFrom.map(station => (
+                        {availableStationsForFrom.map((station) => (
                           <CommandItem
                             key={station}
                             value={station}
@@ -109,7 +140,9 @@ export default function SearchTrain() {
                             <Check
                               className={cn(
                                 "mr-2 h-4 w-4",
-                                station === field.value ? "opacity-100" : "opacity-0"
+                                station === field.value
+                                  ? "opacity-100"
+                                  : "opacity-0"
                               )}
                             />
                             {station}
@@ -154,7 +187,7 @@ export default function SearchTrain() {
                     <CommandList>
                       <CommandEmpty>No station found.</CommandEmpty>
                       <CommandGroup>
-                        {availableStationsForTo.map(station => (
+                        {availableStationsForTo.map((station) => (
                           <CommandItem
                             key={station}
                             value={station}
@@ -166,7 +199,9 @@ export default function SearchTrain() {
                             <Check
                               className={cn(
                                 "mr-2 h-4 w-4",
-                                station === field.value ? "opacity-100" : "opacity-0"
+                                station === field.value
+                                  ? "opacity-100"
+                                  : "opacity-0"
                               )}
                             />
                             {station}
@@ -187,7 +222,7 @@ export default function SearchTrain() {
           control={form.control}
           name="date"
           render={({ field }) => (
-            <FormItem >
+            <FormItem>
               <FormLabel className="mr-8">Select Date: </FormLabel>
               <Popover>
                 <PopoverTrigger asChild>

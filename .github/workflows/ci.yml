@@ -57,8 +57,8 @@ jobs:
 
       - name: Run Migrations
         run: |
-          python ${{ env.PYTHONPATH }}manage.py makemigrations
-          python ${{ env.PYTHONPATH }}manage.py migrate
+          python src/auth/src/manage.py makemigrations
+          python src/auth/src/manage.py migrate
         env:
           DJANGO_SETTINGS_MODULE: src.auth.src.core.settings
           PYTHONPATH: ${{ env.PYTHONPATH }}

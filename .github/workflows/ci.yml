@@ -65,7 +65,8 @@ jobs:
 
       - name: Run Tests
         run: |
-          pytest --reuse-db
+          pwd
+          print("wefghjiwefjhifk")
         env:
           DJANGO_SETTINGS_MODULE: src.auth.src.core.settings
           PYTHONPATH: ${{ env.PYTHONPATH }}

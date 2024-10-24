@@ -48,6 +48,7 @@ INSTALLED_APPS = [
     "drf_spectacular",
     # Local
     "accounts.apps.AccountsConfig",
+      'corsheaders',
 ]
 
 
@@ -64,6 +65,7 @@ MIDDLEWARE = [
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
     # Third party middleware
     "allauth.account.middleware.AccountMiddleware",
+    'corsheaders.middleware.CorsMiddleware',
 ]
 
 ROOT_URLCONF = "core.urls"

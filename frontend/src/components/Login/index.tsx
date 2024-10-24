@@ -3,7 +3,7 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import * as z from "zod";
-import { redirect } from "next/navigation"; //
+import { useRouter } from "next/navigation"; // Use useRouter hook
 import { Button } from "@/components/ui/button";
 import {
   Form,
@@ -28,6 +28,7 @@ export const LoginSchema = z.object({
 // type LoginFormData = z.infer<typeof LoginSchema>;
 
 export default function LoginPage() {
+  const router = useRouter(); // Initialize useRouter
   const { setSession } = useAppContext();
   const form = useForm({
     resolver: zodResolver(LoginSchema),
@@ -47,7 +48,6 @@ export default function LoginPage() {
     };
     const response = await fetch(`${API_URL}/auth/login/`, {
       method: "POST",
-      mode: 'no-cors',
       headers: {
         "Content-Type": "application/json",
       },
@@ -59,23 +59,25 @@ export default function LoginPage() {
       alert("Login failed");
     }
     const responseData = await response.json();
+    console.log(responseData);
     setSession({ token: responseData.key });
-    redirect("/search");
+    router.push("/search");
   };
 
   return (
     <Form {...form}>
-      <form
-        className=" space-y-6 bg-white border-2 border-primary px-12 py-16 rounded-lg shadow-lg text-md dark:text-gray-200 dark:bg-primary/15 dark:border-primary bg-opacity-50 "
-        onSubmit={form.handleSubmit(async (data) => {
+            <form
+        className="space-y-6 bg-white border-2 border-primary px-12 py-16 rounded-lg shadow-lg text-md dark:text-gray-200 dark:bg-primary/15 dark:border-primary bg-opacity-50"
+        onSubmit={form.handleSubmit(async (data, event) => {
+          event?.preventDefault(); // Prevent default form submission
           try {
             await handleLogin(data);
-            redirect("/search");
           } catch (error) {
             console.error(error);
           }
         })}
       >
+
         <FormField
           control={form.control}
           name="username"

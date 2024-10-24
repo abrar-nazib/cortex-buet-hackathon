@@ -13,20 +13,20 @@ jobs:
   test:
     runs-on: ubuntu-latest
 
-    services:
-      postgres:
-        image: postgres:latest
-        env:
-          POSTGRES_USER: postgres
-          POSTGRES_PASSWORD: postgres
-          POSTGRES_DB: test_db
-        ports:
-          - 5432:5432
-        options: >-
-          --health-cmd pg_isready
-          --health-interval 10s
-          --health-timeout 5s
-          --health-retries 5
+    # services:
+    #   postgres:
+    #     image: postgres:latest
+    #     env:
+    #       POSTGRES_USER: postgres
+    #       POSTGRES_PASSWORD: postgres
+    #       POSTGRES_DB: test_db
+    #     ports:
+    #       - 5432:5432
+    #     options: >-
+    #       --health-cmd pg_isready
+    #       --health-interval 10s
+    #       --health-timeout 5s
+    #       --health-retries 5
 
     steps:
       - uses: actions/checkout@v3
@@ -41,15 +41,15 @@ jobs:
           python -m pip install --upgrade pip
           pip install -r src/auth/src/requirements.txt
 
-      - name: Create .env file
-        run: |
-          echo "DATABASE_ENGINE=django.db.backends.postgresql" >> .env
-          echo "DATABASE_NAME=test_db" >> .env
-          echo "DATABASE_USER=postgres" >> .env
-          echo "DATABASE_PASSWORD=postgres" >> .env
-          echo "DATABASE_HOST=localhost" >> .env
-          echo "DATABASE_PORT=5432" >> .env
-          echo "TEST_DATABASE_NAME=test_db" >> .env
+      # - name: Create .env file
+      #   run: |
+      #     echo "DATABASE_ENGINE=django.db.backends.postgresql" >> .env
+      #     echo "DATABASE_NAME=test_db" >> .env
+      #     echo "DATABASE_USER=postgres" >> .env
+      #     echo "DATABASE_PASSWORD=postgres" >> .env
+      #     echo "DATABASE_HOST=localhost" >> .env
+      #     echo "DATABASE_PORT=5432" >> .env
+      #     echo "TEST_DATABASE_NAME=test_db" >> .env
 
       - name: Set PYTHONPATH
         run: |
@@ -65,9 +65,8 @@ jobs:
 
       - name: Run Tests
         run: |
-          pwd
-          pytest
-          
+          python src/auth/src/manage.py test accounts -v 2
+
         env:
           DJANGO_SETTINGS_MODULE: src.auth.src.core.settings
           PYTHONPATH: ${{ env.PYTHONPATH }}

@@ -55,4 +55,4 @@ jobs:
         run: |
           pytest
         env:
-          DJANGO_SETTINGS_MODULE: core.settings
+          DJANGO_SETTINGS_MODULE: src/auth/src/core.settings

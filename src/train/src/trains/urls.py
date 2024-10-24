@@ -11,6 +11,7 @@ from .views import (
     # SeatDetailView,
     ScheduleRetrieveView,
     TrainSearchView,
+    SeatGetWithScheduleView,
 )
 
 urlpatterns = [
@@ -22,6 +23,7 @@ urlpatterns = [
         ScheduleRetrieveView.as_view(),
         name="schedule-retrieve",
     ),
+    path("trains/seats/<uuid:pk>/", SeatGetWithScheduleView.as_view(), name="seat-get"),
     # path("trains/<uuid:pk>/", TrainDetailView.as_view(), name="train-detail"),
     # # Route URLs (nested under trains)
     # path(

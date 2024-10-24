@@ -61,4 +61,3 @@ class BookingTests(APITestCase):
         print(response.status_code, response.data)
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertTrue(response.data['payment_done'])  # Check if the payment is done
-

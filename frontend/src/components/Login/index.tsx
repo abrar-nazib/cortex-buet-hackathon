@@ -4,7 +4,6 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import * as z from "zod";
 import { redirect } from "next/navigation"; //
-import { login } from "@/lib/login";
 import { Button } from "@/components/ui/button";
 import {
   Form,
@@ -15,6 +14,8 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
+import { useAppContext } from "@/context";
+import { API_URL } from "@/constants";
 
 export const LoginSchema = z.object({
   username: z.string().min(4, {
@@ -27,6 +28,7 @@ export const LoginSchema = z.object({
 // type LoginFormData = z.infer<typeof LoginSchema>;
 
 export default function LoginPage() {
+  const { setSession } = useAppContext();
   const form = useForm({
     resolver: zodResolver(LoginSchema),
     defaultValues: {
@@ -35,9 +37,31 @@ export default function LoginPage() {
     },
   });
 
-  const handleLogin= async (data)=>{
-    
-  }
+  const handleLogin = async (formData: {
+    username: string;
+    password: string;
+  }) => {
+    const loginPayload = {
+      username: formData.username,
+      password: formData.password,
+    };
+    const response = await fetch(`${API_URL}/auth/login/`, {
+      method: "POST",
+      mode: 'no-cors',
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(loginPayload),
+    });
+
+    if (!response.ok) {
+      throw new Error("Login failed");
+      alert("Login failed");
+    }
+    const responseData = await response.json();
+    setSession({ token: responseData.key });
+    redirect("/search");
+  };
 
   return (
     <Form {...form}>
@@ -45,7 +69,7 @@ export default function LoginPage() {
         className=" space-y-6 bg-white border-2 border-primary px-12 py-16 rounded-lg shadow-lg text-md dark:text-gray-200 dark:bg-primary/15 dark:border-primary bg-opacity-50 "
         onSubmit={form.handleSubmit(async (data) => {
           try {
-            await login(data);
+            await handleLogin(data);
             redirect("/search");
           } catch (error) {
             console.error(error);

@@ -1,4 +1,6 @@
-import type { Metadata } from "next";
+"use client"
+
+
 import localFont from "next/font/local";
 import "./globals.css";
 import { ThemeProvider } from "@/components/theme-provider";
@@ -14,10 +16,7 @@ const geistMono = localFont({
   weight: "100 900",
 });
 
-export const metadata: Metadata = {
-  title: "CORTEX Train App",
-  description: "CORTEX BUET Hackathon 2024",
-};
+
 
 export default function RootLayout({
   children,

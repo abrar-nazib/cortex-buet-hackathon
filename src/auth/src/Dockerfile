@@ -15,8 +15,8 @@ RUN pip install -r /usr/src/app/requirements.txt
 # COPY ./entrypoint.sh /usr/src/app/entrypoint.sh
 
 COPY . /usr/src/app/
-
-ENTRYPOINT ["/usr/src/app/entrypoint.sh"]
+RUN  python manage.py migrate 
+# ENTRYPOINT ["/usr/src/app/entrypoint.sh"]
 
 # Run the application on port 8000 , 0.0.0.0
 CMD ["python", "manage.py", "runserver", "0.0.0.0:8000"]

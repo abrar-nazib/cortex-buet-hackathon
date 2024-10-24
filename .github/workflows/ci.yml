@@ -66,7 +66,7 @@ jobs:
       - name: Run Tests
         run: |
           pwd
-          pytest
+          python src/auth/src/manage.py test
           
         env:
           DJANGO_SETTINGS_MODULE: src.auth.src.core.settings

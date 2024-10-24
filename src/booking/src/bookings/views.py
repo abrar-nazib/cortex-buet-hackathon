@@ -89,3 +89,19 @@ class BookingPaymentView(APIView):
         booking.payment_done = True
         booking.save()
         return Response(BookingResponseSerializer(booking).data)
+
+
+class BookingDeleteAllExpiredUnconfirmed(APIView):
+    def remove_booking(self, seat_id):
+        print(f"Booking for seat {seat_id} is queued removed.")
+
+    def delete(self, request):
+        unconfirmed_bookings = Booking.objects.filter(
+            expires_at__lt=timezone.now(), payment_done=False
+        )
+
+        for booking in unconfirmed_bookings:
+            self.remove_booking(booking.seat_id)
+            booking.delete()
+
+        return Response({"message": "Expired unconfirmed bookings deleted."})

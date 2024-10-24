@@ -93,7 +93,7 @@ jobs:
 
   test-booking:
     name: Test Booking Service
-    runs-on: self-hosted
+    runs-on: ubuntu latest
 
     if: github.ref == 'refs/heads/booking' || github.ref == 'refs/pull/booking'
     steps:
@@ -107,26 +107,26 @@ jobs:
       - name: Install Dependencies
         run: |
           python -m pip install --upgrade pip
-          pip install -r src/bookings/src/requirements.txt
+          pip install -r src/booking/src/requirements.txt
 
       - name: Set PYTHONPATH
         run: |
-          echo "PYTHONPATH=$PYTHONPATH:/src/bookings/src/" >> $GITHUB_ENV
+          echo "PYTHONPATH=$PYTHONPATH:/src/booking/src/" >> $GITHUB_ENV
 
       - name: Run Migrations
         run: |
-          python src/bookings/src/manage.py makemigrations
-          python src/bookings/src/manage.py migrate
+          python src/booking/src/manage.py makemigrations
+          python src/booking/src/manage.py migrate
         env:
-          DJANGO_SETTINGS_MODULE: src.bookings.src.core.settings
+          DJANGO_SETTINGS_MODULE: src.booking.src.core.settings
           PYTHONPATH: ${{ env.PYTHONPATH }}
 
       - name: Run Tests
         run: |
-          python src/bookings/src/manage.py test bookings -v 2
+          python src/booking/src/manage.py test bookings -v 2
 
         env:
-          DJANGO_SETTINGS_MODULE: src.bookings.src.core.settings
+          DJANGO_SETTINGS_MODULE: src.booking.src.core.settings
           PYTHONPATH: ${{ env.PYTHONPATH }}
 
   test-notifications:

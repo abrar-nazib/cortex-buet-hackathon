@@ -51,8 +51,13 @@ jobs:
           echo "DATABASE_PORT=5432" >> .env
           echo "TEST_DATABASE_NAME=test_db" >> .env
 
+      - name: Set PYTHONPATH
+        run: |
+          echo "PYTHONPATH=$PYTHONPATH:/src/auth/src/" >> $GITHUB_ENV
+
       - name: Run Tests
         run: |
           pytest
         env:
           DJANGO_SETTINGS_MODULE: src.auth.src.core.settings
+          PYTHONPATH: ${{ env.PYTHONPATH }}

@@ -11,12 +11,27 @@ from .serializers import (
     OTPValidationSerializer,
 )
 from drf_spectacular.utils import extend_schema
+from .rabbitmq import queue_notification
+import requests
 
 
 class BookingCreateView(APIView):
 
     def mark_seat_as_booked(self, seat_id):
-        print(f"Seat {seat_id} is marked as booked.")
+        host = "train"
+        url = f"http://{host}:8000/trains/seats/{seat_id}/book/"
+        # Make a POST request to mark the seat as booked
+        response = requests.post(url)
+
+    def get_user_info(self, user_id):
+        host = "auth"
+        url = f"http://{host}:8000/users/{user_id}/"
+        response = requests.get(url)
+
+        if response.status_code != 200:
+            raise Exception("User does not exist.")
+
+        return response.json()
 
     @extend_schema(request=BookingCreateSerializer, responses=BookingResponseSerializer)
     def post(self, request):
@@ -33,9 +48,24 @@ class BookingCreateView(APIView):
                 status=status.HTTP_400_BAD_REQUEST,
             )
 
+        # Check whether the user exists
+        try:
+            user_info = self.get_user_info(serializer.validated_data["user_id"])
+        except Exception as e:
+            return Response(
+                {"error": str(e)},
+                status=status.HTTP_400_BAD_REQUEST,
+            )
+
         booking = serializer.save()
-        print(booking.otp)
-        # Mark the seat as booked: This is a dummy function
+
+        # Send the OTP to the user
+        queue_notification(
+            user_info["email"],
+            "OTP for Ticket Booking",
+            f"Your OTP For Booking Confirmation is {booking.otp}\n\nThanks!",
+        )
+
         self.mark_seat_as_booked(booking.seat_id)
 
         return Response(BookingResponseSerializer(booking).data)
@@ -89,3 +119,35 @@ class BookingPaymentView(APIView):
         booking.payment_done = True
         booking.save()
         return Response(BookingResponseSerializer(booking).data)
+
+
+class BookingDeleteAllExpiredUnconfirmed(APIView):
+    def remove_booking(self, seat_id):
+        host = "train"
+        url = f"http://{host}:8000/trains/seats/{seat_id}/unbook/"
+        # Make a POST request to mark the seat as booked
+        response = requests.post(url)
+
+    def delete(self, request):
+        unconfirmed_bookings = Booking.objects.filter(
+            expires_at__lt=timezone.now(), payment_done=False
+        )
+
+        for booking in unconfirmed_bookings:
+            self.remove_booking(booking.seat_id)
+            booking.delete()
+
+        return Response({"message": "Expired unconfirmed bookings deleted."})
+
+
+class TestPikaView(APIView):
+    def get(self, request):
+        self.test_pika()
+        return Response({"message": "Test Pika function is called."})
+
+    def test_pika(self):
+        queue_notification(
+            "nazib.abrar2001@gmail.com",
+            "OTP",
+            "Your OTP For Booking Confirmation is 1234\n\nThanks!",
+        )

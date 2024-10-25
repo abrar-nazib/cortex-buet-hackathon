@@ -6,12 +6,29 @@ services:
       context: ./auth/src
     ports:
       - 8000:8000
+    volumes:
+      - ./auth/src:/usr/src/app
+
   train:
     container_name: dj-train
     build:
       context: ./train/src
     ports:
       - 8001:8000
+    volumes:
+      - ./train/src:/usr/src/app
+
+  rabbitmq:
+    image: rabbitmq:4-management-alpine
+    container_name: "rabbitmq"
+    ports:
+      # - 5672:5672
+      - 15672:15672
+    healthcheck:
+      test: ["CMD", "rabbitmqctl", "status"]
+      interval: 20s
+      timeout: 10s
+      retries: 5
 
   booking:
     container_name: dj-booking
@@ -19,6 +36,11 @@ services:
       context: ./booking/src
     ports:
       - 8002:8000
+    depends_on:
+      rabbitmq:
+        condition: service_healthy
+    volumes:
+      - ./booking/src:/usr/src/app
 
   notification:
     container_name: dj-notification
@@ -26,3 +48,18 @@ services:
       context: ./notification/src
     ports:
       - 8003:8000
+    depends_on:
+      rabbitmq:
+        condition: service_healthy
+    volumes:
+      - ./notification/src:/usr/src/app
+
+  nextjs:
+    build:
+      context: ./frontend
+    ports:
+      - "3000:3000"
+    environment:
+      - NEXT_PUBLIC_API_URL=http://localhost:8000
+      - NEXT_PUBLIC_API_TRAIN=http://localhost:8001
+      - NEXT_PUBLIC_API_BOOKING=http://localhost:8002

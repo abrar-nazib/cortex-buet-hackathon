@@ -1,0 +1,49 @@
+.train-container {
+  height: 80vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.train-svg {
+  width: 90%; /* Increased from 20% to 50% */
+  border-radius: 95%;
+
+}
+.dark .train-svg {
+  width: 90%; /* Increased from 20% to 50% */
+  border-radius: 95%;
+  box-shadow: 0 0 20px 10px rgba(0, 123, 255, 0.7); /* Blue glow effect */
+  transition: box-shadow 0.3s ease; /* Smooth transition for hover effect */
+}
+/* dark mode in tailwind css , but have implment in here when some thing is happeneing in dark mode */
+/* .dark .train-svg {
+  box-shadow: 0 0 20px 10px rgba(255, 255, 255, 0.7);
+} */
+
+.cls-1 {
+  fill: url(#linear-gradient);
+}
+
+.cls-2 {
+  fill: #fff;
+}
+
+.cls-3 {
+  fill: #0a2342;
+}
+
+.cls-4 {
+  fill: none;
+  stroke: #fff;
+  stroke-miterlimit: 10;
+}
+
+.train {
+  animation: choo_choo 4.5s ease infinite;
+}
+
+@keyframes choo_choo {
+  100% {
+    transform: translate(-300px, 0);
+  }
+}

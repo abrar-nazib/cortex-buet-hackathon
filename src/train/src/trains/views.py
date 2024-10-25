@@ -118,3 +118,57 @@ class TrainSearchView(APIView):
 class ScheduleRetrieveView(generics.RetrieveAPIView):
     queryset = Schedule.objects.all()
     serializer_class = ScheduleSerializerNested
+
+
+class SeatGetWithScheduleView(APIView):
+    # /trains/seats/<uuid:pk>/
+
+    def get(self, request, pk):
+        try:
+            seat = Seat.objects.get(pk=pk)
+        except Seat.DoesNotExist:
+            raise NotFound("Seat not found")
+
+        schedule = seat.schedule
+        data = {
+            "seat_number": seat.seat_number,
+            "coach_number": seat.coach_number,
+            "schedule": {
+                "id": schedule.id,
+                "fare": schedule.fare,
+                "date": schedule.date,
+                "train": schedule.route.train.name,
+                "from": schedule.route.source,
+                "to": schedule.route.destination,
+            },
+        }
+
+        return Response(data)
+
+
+class SetSeatBookedView(APIView):
+    # /trains/seats/<uuid:pk>/book/
+    def post(self, request, pk):
+        try:
+            seat = Seat.objects.get(pk=pk)
+        except Seat.DoesNotExist:
+            raise NotFound("Seat not found")
+
+        seat.is_booked = True
+        seat.save()
+
+        return Response({"message": "Seat booked successfully"})
+
+
+class SetSeatNotBookedView(APIView):
+    # /trains/seats/<uuid:pk>/unbook/
+    def post(self, request, pk):
+        try:
+            seat = Seat.objects.get(pk=pk)
+        except Seat.DoesNotExist:
+            raise NotFound("Seat not found")
+
+        seat.is_booked = False
+        seat.save()
+
+        return Response({"message": "Seat unbooked successfully"})

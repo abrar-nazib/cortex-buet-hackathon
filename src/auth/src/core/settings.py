@@ -11,7 +11,6 @@ https://docs.djangoproject.com/en/5.0/ref/settings/
 """
 
 from pathlib import Path
-from decouple import config
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -26,7 +25,7 @@ SECRET_KEY = "django-insecure-)%v-uu8vh7!z%43+8)*o7^nzjyby)kw%r9&9^5xhaot8tbj=gh
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ["*"]
 
 
 # Application definition
@@ -50,7 +49,6 @@ INSTALLED_APPS = [
     "corsheaders",
     # Local
     "accounts.apps.AccountsConfig",
-    'django_extensions',
 ]
 
 

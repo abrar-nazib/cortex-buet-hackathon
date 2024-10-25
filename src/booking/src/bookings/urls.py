@@ -4,6 +4,7 @@ from .views import (
     BookingConfirmView,
     BookingPaymentView,
     BookingDeleteAllExpiredUnconfirmed,
+    TestPikaView,
 )
 
 urlpatterns = [
@@ -23,4 +24,5 @@ urlpatterns = [
         BookingDeleteAllExpiredUnconfirmed.as_view(),
         name="booking-delete-expired-unconfirmed",
     ),
+    # path("test-pika/", TestPikaView.as_view(), name="test-pika"),
 ]

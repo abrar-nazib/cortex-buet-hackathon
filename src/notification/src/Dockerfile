@@ -12,14 +12,15 @@ COPY ./requirements.txt /usr/src/app/requirements.txt
 
 RUN pip install -r /usr/src/app/requirements.txt
 
-
 COPY . /usr/src/app/
 
-RUN python /usr/src/app/manage.py migrate
+CMD ["python", "rabbitmq_consumer.py"]
 
-# Run the application on port 8000 , 0.0.0.0
-CMD ["python", "manage.py", "runserver", "0.0.0.0:8000"]
+# RUN python /usr/src/app/manage.py migrate
 
-EXPOSE 8000
+# # Run the application on port 8000 , 0.0.0.0
+# CMD ["python", "manage.py", "runserver", "0.0.0.0:8000"]
+
+# EXPOSE 8000
 
 # ENTRYPOINT ["/usr/src/app/entrypoint.sh"]

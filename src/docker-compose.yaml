@@ -53,3 +53,13 @@ services:
         condition: service_healthy
     volumes:
       - ./notification/src:/usr/src/app
+
+  nextjs:
+    build:
+      context: ./frontend
+    ports:
+      - "3000:3000"
+    environment:
+      - NEXT_PUBLIC_API_URL=http://localhost:8000
+      - NEXT_PUBLIC_API_TRAIN=http://localhost:8001
+      - NEXT_PUBLIC_API_BOOKING=http://localhost:8002

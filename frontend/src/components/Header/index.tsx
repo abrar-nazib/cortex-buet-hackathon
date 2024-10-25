@@ -10,7 +10,7 @@ function Header() {
   const { session } = useAppContext();
 
   return (
-    <header className="mb-24">
+    <header className="mb-4">
       <motion.div
         className="fixed top-0 left-1/2 h-[4.5rem] w-full rounded-none border bg-primary border-primary/10  border-opacity-40 bg-white bg-opacity-80 shadow-lg shadow-black/[0.03] backdrop-blur-[0.5rem] sm:top-6 sm:h-[3.25rem] sm:w-[36rem] sm:rounded-lg dark:bg-primary/15 dark:border-primary/40 dark:bg-opacity-75"
         initial={{ y: -100, x: "-50%", opacity: 0 }}
@@ -23,7 +23,7 @@ function Header() {
             animate={{ y: 0, opacity: 1 }}
           >
             <Link href="/" className="text-xl text-primary/80">
-            <span className="text-primary font-semibold text-2xl ">Cx</span>-RAILWAY
+            <span className="text-primary font-semibold text-xl ">CX</span>-railway
             </Link>
           </motion.li>
           <div className="flex items-center justify-center gap-4">

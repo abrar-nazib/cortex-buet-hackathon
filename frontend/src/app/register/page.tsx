@@ -3,7 +3,7 @@ import React from "react";
 import Link from "next/link";
 
 const Register = () => {
-  return  <section className=" flex flex-col items-center justify-center gap-4">
+  return  <section className=" flex flex-col items-center justify-center gap-4 mt-12">
   <div className="w-[600px]">
     <p className="w-full flex-grow text-center text-2xl text-primary font-semibold my-8 ">
       Register for an account to get started.

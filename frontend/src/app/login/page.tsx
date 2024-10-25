@@ -5,7 +5,7 @@ import Link from "next/link";
 
 const Login = () => {
   return (
-    <section className=" flex flex-col items-center justify-center gap-4">
+    <section className=" flex flex-col items-center justify-center gap-4 mt-24">
       <div className="w-[600px]">
         <p className="w-full flex-grow text-center text-2xl text-primary font-semibold my-8 ">
           Login to your account to continue.

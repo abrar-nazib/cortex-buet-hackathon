@@ -1,1 +1,0 @@
-# cortex-buet-hackathon

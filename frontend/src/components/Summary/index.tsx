@@ -66,7 +66,7 @@ const Summary = () => {
         setError("An error occurred while fetching seat information.");
         toast({
           title: "Error",
-          description: "Failed to load seat information. Please try again.",
+          description: `Failed to load seat information. Please try again.${err}`,
           variant: "destructive",
         });
       } finally {

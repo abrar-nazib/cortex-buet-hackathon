@@ -1,3 +1,5 @@
+ // eslint-disable-file @typescript-eslint/no-unused-vars
+
 "use client";
 
 import { useState } from "react";
@@ -9,6 +11,7 @@ import { useAppContext } from "@/context";
 import { useRouter } from "next/navigation";
 import React from "react";
 import { API_BOOKING } from "@/constants";
+
 
 export default function Payment() {
   const router = useRouter(); // Initialize useRouter
@@ -26,16 +29,19 @@ export default function Payment() {
   const handlePayment = async () => {
     setLoading(true);
     try {
-      const response = await fetch(`${API_BOOKING}/booking/${bookingId}/payment/`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          email,
-          password,
-        }),
-      });
+      const response = await fetch(
+        `${API_BOOKING}/booking/${bookingId}/payment/`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            email,
+            password,
+          }),
+        }
+      );
 
       if (response.ok) {
         toast({
@@ -43,7 +49,7 @@ export default function Payment() {
           description: "Your payment was processed successfully.",
           variant: "success",
         });
-        router.push("/summary")
+        router.push("/summary");
       } else {
         toast({
           title: "Payment Failed",
@@ -51,10 +57,12 @@ export default function Payment() {
           variant: "destructive",
         });
       }
-    } catch (error) {
+    } catch (error: unknown) {
+      // eslint-disable-line @typescript-eslint/no-unused-vars
       toast({
         title: "Error",
-        description: "Something went wrong while processing the payment.",
+        description: `Something went wrong while processing the payment.
+        ${error} `,
         variant: "destructive",
       });
     } finally {

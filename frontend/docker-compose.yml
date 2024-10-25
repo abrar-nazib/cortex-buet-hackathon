@@ -2,14 +2,13 @@ version: '3.8'
 
 services:
   nextjs:
-    image: node:20
-    working_dir: /app
+    build:
+      context: .
+      dockerfile: Dockerfile
     ports:
       - '3000:3000'
-    command: sh -c "npm install && npm run build && npm start"
     environment:
       - NODE_ENV=development
       - API_URL=http://localhost:8000
-      -  API_TRAIN =http://localhost:8001
-      - API_BOOKING =http://localhost:8002
-      - API_PAYMENT =http://localhost:8003
+      - API_TRAIN=http://localhost:8001
+      - API_BOOKING=http://localhost:8002

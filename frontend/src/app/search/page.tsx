@@ -1,6 +1,6 @@
 import SearchTrain from "@/components/SearchTrain";
 import React from "react";
-import { motion } from "framer-motion";
+
 
 const Search = () => {
   return (

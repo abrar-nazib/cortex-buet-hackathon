@@ -144,3 +144,31 @@ class SeatGetWithScheduleView(APIView):
         }
 
         return Response(data)
+
+
+class SetSeatBookedView(APIView):
+    # /trains/seats/<uuid:pk>/book/
+    def post(self, request, pk):
+        try:
+            seat = Seat.objects.get(pk=pk)
+        except Seat.DoesNotExist:
+            raise NotFound("Seat not found")
+
+        seat.is_booked = True
+        seat.save()
+
+        return Response({"message": "Seat booked successfully"})
+
+
+class SetSeatNotBookedView(APIView):
+    # /trains/seats/<uuid:pk>/unbook/
+    def post(self, request, pk):
+        try:
+            seat = Seat.objects.get(pk=pk)
+        except Seat.DoesNotExist:
+            raise NotFound("Seat not found")
+
+        seat.is_booked = False
+        seat.save()
+
+        return Response({"message": "Seat unbooked successfully"})
